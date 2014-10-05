@@ -1,6 +1,8 @@
-package net.anthavio.uber;
+package net.anthavio.uber.response;
 
 import java.io.Serializable;
+
+import net.anthavio.uber.JsonStringBuilder;
 
 /**
  * https://developer.uber.com/v1/endpoints/#user-profile

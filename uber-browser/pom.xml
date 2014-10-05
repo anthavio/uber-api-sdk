@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>net.anthavio.maven</groupId>
 		<artifactId>anthavio-super-pom</artifactId>
-		<version>3-SNAPSHOT</version>
+		<version>3</version>
 	</parent>
 
 	<groupId>net.anthavio.uber</groupId>
@@ -114,13 +114,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jetty</artifactId>
 		</dependency>
-		
+		<!--
 		<dependency>
 			<groupId>de.codecentric</groupId>
 			<artifactId>spring-boot-admin-server</artifactId>
 			<version>1.0.2</version>
 		</dependency>
-		
+		-->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
@@ -133,13 +133,13 @@
 			<artifactId>spring-boot-vaadin</artifactId>
 			<version>0.0.3-SNAPSHOT</version>
 		</dependency>
-<!--
+<!---->
 		<dependency>
 			<groupId>org.vaadin.spring</groupId>
 			<artifactId>spring-vaadin-touchkit</artifactId>
 			<version>0.0.3-SNAPSHOT</version>
 		</dependency>
--->
+
 		<dependency>
 			<groupId>com.vaadin.addon</groupId>
 			<artifactId>vaadin-touchkit-agpl</artifactId>

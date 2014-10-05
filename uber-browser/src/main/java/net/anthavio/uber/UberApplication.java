@@ -8,6 +8,7 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.vaadin.spring.boot.EnableVaadinServlet;
 
 /**
  * Spring Boot launcher
@@ -20,6 +21,8 @@ import org.springframework.context.annotation.Configuration;
  *
  */
 @EnableAutoConfiguration
+//@EnableVaadin
+@EnableVaadinServlet
 @Configuration
 @ComponentScan
 public class UberApplication extends SpringBootServletInitializer {

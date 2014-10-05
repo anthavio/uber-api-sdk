@@ -14,9 +14,8 @@ import net.anthavio.httl.api.HttlApiBuilder;
 import net.anthavio.httl.auth.OAuth2;
 import net.anthavio.httl.marshall.Jackson2Unmarshaller;
 import net.anthavio.httl.transport.HttpUrlConfig;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.anthavio.httl.util.HttlUtil;
+import net.anthavio.uber.response.UberError;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -38,7 +37,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
  */
 public class UberClient implements Closeable {
 
-	private static final Logger logger = LoggerFactory.getLogger(UberClient.class);
+	//private static final Logger logger = LoggerFactory.getLogger(UberClient.class);
 
 	private final UberSettings settings;
 
@@ -62,33 +61,6 @@ public class UberClient implements Closeable {
 			throw new IllegalArgumentException("Null config");
 		}
 
-		settings.getAuthUrl();
-
-		/*
-				config.setParamSetter(new ConfigurableParamSetter("yyyy-MM-dd HH:mm:ss.SSS")); //2010-06-01 12:21:47.000
-				
-				config.addBuilderVisitor(new HttlBuilderVisitor() {
-
-					@Override
-					public void visit(HttlRequestBuilder<?> builder) {
-						builder.param("application_id", settings.getApplicationId());
-					}
-				});
-		*/
-		config.addExecutionFilter(new HttlExecutionFilter() {
-
-			@Override
-			public HttlResponse filter(HttlRequest request, HttlExecutionChain chain) throws IOException {
-
-				HttlResponse response = chain.next(request);
-
-				if (response.getHttpStatusCode() >= 400 && "application/json".equals(response.getMediaType())) {
-					UberError uberError = mapper.readValue(response.getStream(), UberError.class);
-					throw new UberException(response.getHttpStatusCode(), uberError);
-				}
-				return response;
-			}
-		});
 		this.mapper = new ObjectMapper().setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
 		this.mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
@@ -98,6 +70,37 @@ public class UberClient implements Closeable {
 
 		Jackson2Unmarshaller jackson = new Jackson2Unmarshaller(mapper);
 		config.setUnmarshaller(jackson);
+
+		/*
+		config.setParamSetter(new ConfigurableParamSetter("yyyy-MM-dd HH:mm:ss.SSS")); //2010-06-01 12:21:47.000
+		
+		config.addBuilderVisitor(new HttlBuilderVisitor() {
+
+			@Override
+			public void visit(HttlRequestBuilder<?> builder) {
+				builder.param("application_id", settings.getApplicationId());
+			}
+		});
+		*/
+		config.addExecutionFilter(new HttlExecutionFilter() {
+
+			@Override
+			public HttlResponse filter(HttlRequest request, HttlExecutionChain chain) throws IOException {
+
+				HttlResponse response = chain.next(request);
+
+				if (response.getHttpStatusCode() >= 400) {
+					if ("application/json".equals(response.getMediaType())) {
+						UberError uberError = mapper.readValue(response.getStream(), UberError.class);
+						throw new UberException(response.getHttpStatusCode(), uberError);
+					} else {
+						String content = HttlUtil.readAsString(response);
+						throw new UberException(content);
+					}
+				}
+				return response;
+			}
+		});
 
 		this.sender = config.build();
 

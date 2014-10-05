@@ -5,7 +5,7 @@ import java.net.URL;
 
 import net.anthavio.httl.HttlSender;
 import net.anthavio.httl.auth.OAuth2;
-import net.anthavio.httl.util.HttpHeaderUtil;
+import net.anthavio.httl.util.HttlUtil;
 
 /**
  * 
@@ -66,7 +66,7 @@ public class UberSettings {
 		}
 		//this.redirectUri = redirectUrl;
 
-		HttlSender sender = HttlSender.url(HttpHeaderUtil.splitUrlPath(authUrl)[0]).build();
+		HttlSender sender = HttlSender.url(HttlUtil.splitUrlPath(authUrl)[0]).build();
 
 		oAuth2 = OAuth2.Builder().setAuthorizationUrl(authUrl + "/oauth/authorize").setClientId(appClientId)
 				.setClientSecret(appSecret).setTokenEndpoint(sender, authUrl + "/oauth/token").setRedirectUri(redirectUrl)

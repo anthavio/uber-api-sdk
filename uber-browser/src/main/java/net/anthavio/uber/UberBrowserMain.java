@@ -9,7 +9,7 @@ import net.anthavio.sewer.jetty.JettyWrapper;
  * @author martin.vanek
  *
  */
-public class WotanBrowserMain {
+public class UberBrowserMain {
 
 	public static void main(String[] args) {
 		new JettyWrapper().start();

@@ -1,5 +1,7 @@
 package net.anthavio.uber;
 
+import net.anthavio.uber.response.UberError;
+
 /**
  * 
  * @author martin.vanek
@@ -22,7 +24,7 @@ public class UberException extends RuntimeException {
 	}
 
 	public UberException(int httpStatus, UberError error) {
-		super("HTTP " + httpStatus + " " + error.toString());
+		super("HTTP: " + httpStatus + " message: " + error.toString());
 	}
 
 }

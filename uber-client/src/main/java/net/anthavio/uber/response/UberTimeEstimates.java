@@ -1,7 +1,9 @@
-package net.anthavio.uber;
+package net.anthavio.uber.response;
 
 import java.io.Serializable;
 import java.util.List;
+
+import net.anthavio.uber.JsonStringBuilder;
 
 /**
  * https://developer.uber.com/v1/endpoints/#time-estimates

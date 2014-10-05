@@ -6,6 +6,11 @@ import net.anthavio.httl.api.HttlCall;
 import net.anthavio.httl.api.HttlHeaders;
 import net.anthavio.httl.api.HttlVar;
 import net.anthavio.httl.api.VarSetter;
+import net.anthavio.uber.response.UberPriceEstimates;
+import net.anthavio.uber.response.UberProducts;
+import net.anthavio.uber.response.UberTimeEstimates;
+import net.anthavio.uber.response.UberUserActivity;
+import net.anthavio.uber.response.UberUserProfile;
 
 /**
  * 

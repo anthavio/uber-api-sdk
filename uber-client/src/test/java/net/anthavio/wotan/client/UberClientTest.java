@@ -5,11 +5,11 @@ import java.util.Properties;
 import net.anthavio.httl.SenderConfigurer;
 import net.anthavio.httl.transport.HttpClient4Config;
 import net.anthavio.uber.UberClient;
-import net.anthavio.uber.UberProducts;
 import net.anthavio.uber.UberSettings;
 import net.anthavio.uber.UberToken;
 import net.anthavio.uber.UberToken.TokenType;
-import net.anthavio.uber.UberUserProfile;
+import net.anthavio.uber.response.UberProducts;
+import net.anthavio.uber.response.UberUserProfile;
 
 /**
  * 
