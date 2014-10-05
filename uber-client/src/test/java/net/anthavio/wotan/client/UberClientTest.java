@@ -5,6 +5,7 @@ import java.util.Properties;
 import net.anthavio.httl.SenderConfigurer;
 import net.anthavio.httl.transport.HttpClient4Config;
 import net.anthavio.uber.UberClient;
+import net.anthavio.uber.UberProducts;
 import net.anthavio.uber.UberSettings;
 import net.anthavio.uber.UberToken;
 import net.anthavio.uber.UberToken.TokenType;
@@ -32,15 +33,19 @@ public class UberClientTest {
 		String callbackUrl = "http://localhost:8080/uber/oauth/callback";
 		Properties props = new Properties();
 		props.load(getClass().getResourceAsStream("/uber-client.properties"));
-		String clientId = props.getProperty("app.client_id");
-		String clientSecret = props.getProperty("app.secret");
+		String clientId = props.getProperty("uber.app.client_id");
+		String clientSecret = props.getProperty("uber.app.secret");
+		String serverToken = props.getProperty("uber.app.server_token");
+
 		UberSettings settings = new UberSettings(clientId, clientSecret, callbackUrl);
 		SenderConfigurer builder = new HttpClient4Config(settings.getApiUrl()).sender();
 		UberClient client = new UberClient(settings, builder);
-		UberToken token = new UberToken(TokenType.SERVER, "QvqZ1NK1W7vovXl08PVOCIygxQQYLLw_5zugxfO2");
-		//UberProducts products = client.api().products(token, 37.7759792, -122.41823);
-		//System.out.println(products);
 
+		UberToken token = new UberToken(TokenType.SERVER, serverToken);
+		UberProducts products = client.api().products(token, 37.7759792, -122.41823);
+		System.out.println(products);
+
+		settings.getOauth2().getAuthorizationUrl("profile history_lite");//history
 		UberUserProfile profile = client.api().me(token.getValue());
 		System.out.println(profile);
 
