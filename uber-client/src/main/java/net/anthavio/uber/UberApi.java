@@ -112,7 +112,7 @@ public interface UberApi {
 	 */
 	@HttlCall("GET /v1.1/history")
 	@HttlHeaders("Authorization: Bearer {bearer_token}")
-	public UberUserActivity history(@HttlVar("bearer_token") String access_token, @HttlVar("offset") Integer offset,
+	public UberUserActivity history(@HttlVar("bearer_token") String bearer_token, @HttlVar("offset") Integer offset,
 			@HttlVar("limit") Integer limit);
 
 	/**
@@ -128,7 +128,7 @@ public interface UberApi {
 	 */
 	@HttlCall("GET /v1/history")
 	@HttlHeaders("Authorization: Bearer {bearer_token}")
-	public UberUserActivity history_v1(@HttlVar("bearer_token") String access_token, @HttlVar("offset") Integer offset,
+	public UberUserActivity history_v1(@HttlVar("bearer_token") String bearer_token, @HttlVar("offset") Integer offset,
 			@HttlVar("limit") Integer limit);
 
 	public static class TokenSetter implements VarSetter<UberToken> {
