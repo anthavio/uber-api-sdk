@@ -16,9 +16,8 @@ public class DesktopMobileUIProvider extends UIProvider {
 	@Override
 	public Class<? extends UI> getUIClass(UIClassSelectionEvent event) {
 		String userAgent = event.getRequest().getHeader("user-agent").toLowerCase();
-
 		if (userAgent.contains("webkit") || userAgent.contains("windows phone 8") || userAgent.contains("windows phone 9")) {
-			return UberMobileUI.class;
+			return UberTouchKitUI.class;
 		} else {
 			return UberDesktopUI.class;
 		}

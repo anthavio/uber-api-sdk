@@ -2,7 +2,7 @@ package net.anthavio.uber.web;
 
 import java.io.Serializable;
 
-import net.anthavio.uber.UberToken;
+import net.anthavio.uber.client.UberToken;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;

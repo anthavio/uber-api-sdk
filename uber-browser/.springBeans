@@ -7,7 +7,7 @@
 	</configSuffixes>
 	<enableImports><![CDATA[false]]></enableImports>
 	<configs>
-		<config>java:net.anthavio.uber.UberApplication</config>
+		<config>java:net.anthavio.uber.client.UberApplication</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

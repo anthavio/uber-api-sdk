@@ -119,6 +119,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jetty</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>jetty-jsp</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!--
 		<dependency>
@@ -139,19 +145,13 @@
 			<artifactId>spring-boot-vaadin</artifactId>
 			<version>0.0.3-SNAPSHOT</version>
 		</dependency>
-<!---->
+		<!---->
 		<dependency>
 			<groupId>org.vaadin.spring</groupId>
 			<artifactId>spring-vaadin-touchkit</artifactId>
 			<version>0.0.3-SNAPSHOT</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.vaadin.addon</groupId>
-			<artifactId>vaadin-touchkit-agpl</artifactId>
-			<version>4.0.0</version>
-		</dependency>
-		
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-themes</artifactId>
@@ -191,6 +191,12 @@
 		<!-- Vaadin Addons -->
 		
 		<dependency>
+			<groupId>com.vaadin.addon</groupId>
+			<artifactId>vaadin-touchkit-agpl</artifactId>
+			<version>4.0.0</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.vaadin.addon</groupId>
 			<artifactId>v-leaflet</artifactId>
 			<version>0.5.7</version>
@@ -200,6 +206,30 @@
 					<artifactId>slf4j-simple</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.vaadin.addons</groupId>
+			<artifactId>pagedtable</artifactId>
+			<version>0.6.5</version>
+		</dependency>
+<!--
+		<dependency>
+			<groupId>com.vaadin.tapio</groupId>
+			<artifactId>googlemaps</artifactId>
+			<version>0.9.0</version>
+		</dependency>
+-->	
+		<dependency>
+			<groupId>org.vaadin.addons</groupId>
+			<artifactId>qrcode</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+	
+		<dependency>
+			<groupId>com.vaadin.addon.responsive</groupId>
+			<artifactId>responsive</artifactId>
+			<version>1.0.0.alpha1</version>
 		</dependency>
 
 		<!-- <dependency> <groupId>com.vaadin</groupId> <artifactId>vaadin-push</artifactId> 
@@ -267,7 +297,12 @@
 			<artifactId>fest-assert-core</artifactId>
 		</dependency>
 -->
-  </dependencies>
+  <dependency>
+  	<groupId>org.scala-lang</groupId>
+  	<artifactId>scala-library</artifactId>
+  	<version>2.10.4</version>
+  </dependency>
+	</dependencies>
   
 	<build>
 		<plugins>
@@ -275,7 +310,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>1.1.6.RELEASE</version>
+				<version>${spring.boot.version}</version>
 			</plugin>
 			
 			<plugin>
@@ -346,17 +381,19 @@
 				<artifactId>vaadin-maven-plugin</artifactId>
 				<version>${vaadin.version}</version>
 				<configuration>
-					<extraJvmArgs>-Xms512m -Xmx1024m -Xss1024k -XX:MaxPermSize=256m</extraJvmArgs>
+					<extraJvmArgs>-Xms512m -Xmx1024m -Xss1024k</extraJvmArgs>
 					<!-- We are doing "inplace" but into subdir VAADIN/widgetsets. This way compatible with Vaadin eclipse plugin. -->
 					<webappDirectory>${basedir}/src/main/webapp/VAADIN/widgetsets</webappDirectory>
 					<hostedWebapp>${basedir}/src/main/webapp/VAADIN/widgetsets</hostedWebapp>
 					<noServer>true</noServer>
 					<!-- Remove draftCompile when project is ready -->
 					<draftCompile>false</draftCompile>
-					<compileReport>true</compileReport>
+					<compileReport>false</compileReport>
 					<style>OBF</style>
 					<strict>true</strict>
 					<runTarget>http://localhost:8080/</runTarget>
+					<persistentunitcachedir>${project.build.directory}</persistentunitcachedir>
+					<deploy>${project.build.directory}/gwt-deploy</deploy>
 				</configuration>
 				<executions>
 					<execution>
@@ -366,10 +403,11 @@
 							<!-- </modules> -->
 						</configuration>
 						<goals>
+							<goal>clean</goal>
 							<goal>resources</goal>
-							<!--
+							<goal>update-theme</goal>
 							<goal>update-widgetset</goal>
-							-->
+							<goal>compile-theme</goal>
 							<goal>compile</goal>
 						</goals>
 					</execution>
@@ -410,8 +448,11 @@
 										<artifactId>vaadin-maven-plugin</artifactId>
 										<versionRange>[0.0.1,)</versionRange>
 										<goals>
+											<goal>clean</goal>
 											<goal>resources</goal>
+											<goal>update-theme</goal>
 											<goal>update-widgetset</goal>
+											<goal>compile-theme</goal>
 											<goal>compile</goal>
 										</goals>
 									</pluginExecutionFilter>

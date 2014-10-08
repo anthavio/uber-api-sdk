@@ -8,9 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.anthavio.httl.auth.OAuthTokenResponse;
-import net.anthavio.uber.UberClient;
-import net.anthavio.uber.UberToken;
-import net.anthavio.uber.UberToken.TokenType;
+import net.anthavio.uber.client.UberClient;
+import net.anthavio.uber.client.UberToken;
+import net.anthavio.uber.client.UberToken.TokenType;
 import net.anthavio.uber.web.SessionData;
 
 import org.apache.commons.lang.UnhandledException;

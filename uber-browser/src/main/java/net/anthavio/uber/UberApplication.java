@@ -1,14 +1,19 @@
 package net.anthavio.uber;
 
+import net.anthavio.uber.client.UberClient;
+import net.anthavio.uber.client.UberSettings;
+import net.anthavio.uber.web.vaadin.StaticContentServlet;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.vaadin.spring.boot.EnableVaadinServlet;
+import org.vaadin.spring.touchkit.servlet.SpringAwareTouchKitServlet;
 
 /**
  * Spring Boot launcher
@@ -22,7 +27,7 @@ import org.vaadin.spring.boot.EnableVaadinServlet;
  */
 @EnableAutoConfiguration
 //@EnableVaadin
-@EnableVaadinServlet
+//@EnabletVaadinServlet
 @Configuration
 @ComponentScan
 public class UberApplication extends SpringBootServletInitializer {
@@ -39,6 +44,18 @@ public class UberApplication extends SpringBootServletInitializer {
 	@Bean
 	public UberClient UberClient() {
 		return new UberClient(UberSettings());
+	}
+
+	@Bean
+	public ServletRegistrationBean SpringAwareTouchKitServlet() {
+		return new ServletRegistrationBean(new SpringAwareTouchKitServlet(), "/vui/*");
+		//return new ServletRegistrationBean(new SpringAwareVaadinServlet(), "/vui/*");
+	}
+
+	@Bean
+	public ServletRegistrationBean StaticContentServlet() {
+		//return new ServletRegistrationBean(new SpringAwareTouchKitServlet(), "/vui/*");
+		return new ServletRegistrationBean(new StaticContentServlet(), "/VAADIN/*");
 	}
 
 	@Override
