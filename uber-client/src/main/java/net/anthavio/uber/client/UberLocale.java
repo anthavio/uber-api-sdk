@@ -1,4 +1,4 @@
-package net.anthavio.uber;
+package net.anthavio.uber.client;
 
 /**
  * Accepts-Language

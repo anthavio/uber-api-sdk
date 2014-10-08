@@ -1,4 +1,4 @@
-package net.anthavio.uber.response;
+package net.anthavio.uber.client.model;
 
 import java.io.Serializable;
 import java.util.List;

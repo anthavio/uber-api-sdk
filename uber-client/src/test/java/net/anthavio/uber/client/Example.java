@@ -1,4 +1,4 @@
-package net.anthavio.wotan.client;
+package net.anthavio.uber.client;
 
 /**
  * 

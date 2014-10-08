@@ -1,6 +1,6 @@
-package net.anthavio.uber;
+package net.anthavio.uber.client;
 
-import net.anthavio.uber.response.UberError;
+import net.anthavio.uber.client.model.UberError;
 
 /**
  * 

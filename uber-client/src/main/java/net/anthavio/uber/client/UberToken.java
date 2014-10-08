@@ -1,4 +1,4 @@
-package net.anthavio.uber;
+package net.anthavio.uber.client;
 
 import java.io.Serializable;
 
@@ -50,6 +50,12 @@ public class UberToken implements Serializable {
 
 	public String getValue() {
 		return value;
+	}
+
+	@Override
+	public String toString() {
+		return "UberToken [type=" + type + ", value=" + value.substring(0, 4) + "*******************"
+				+ value.substring(value.length() - 4) + " ]";
 	}
 
 }

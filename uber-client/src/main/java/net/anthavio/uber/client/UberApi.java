@@ -1,4 +1,4 @@
-package net.anthavio.uber;
+package net.anthavio.uber.client;
 
 import net.anthavio.httl.HttlRequestBuilders.HttlRequestBuilder;
 import net.anthavio.httl.api.HttlApi;
@@ -6,11 +6,11 @@ import net.anthavio.httl.api.HttlCall;
 import net.anthavio.httl.api.HttlHeaders;
 import net.anthavio.httl.api.HttlVar;
 import net.anthavio.httl.api.VarSetter;
-import net.anthavio.uber.response.UberPriceEstimates;
-import net.anthavio.uber.response.UberProducts;
-import net.anthavio.uber.response.UberTimeEstimates;
-import net.anthavio.uber.response.UberUserActivity;
-import net.anthavio.uber.response.UberUserProfile;
+import net.anthavio.uber.client.model.UberPriceEstimates;
+import net.anthavio.uber.client.model.UberProducts;
+import net.anthavio.uber.client.model.UberTimeEstimates;
+import net.anthavio.uber.client.model.UberUserActivity;
+import net.anthavio.uber.client.model.UberUserProfile;
 
 /**
  * 

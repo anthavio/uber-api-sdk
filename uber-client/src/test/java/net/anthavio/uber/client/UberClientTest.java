@@ -1,15 +1,15 @@
-package net.anthavio.wotan.client;
+package net.anthavio.uber.client;
 
 import java.util.Properties;
 
 import net.anthavio.httl.SenderConfigurer;
 import net.anthavio.httl.transport.HttpClient4Config;
-import net.anthavio.uber.UberClient;
-import net.anthavio.uber.UberSettings;
-import net.anthavio.uber.UberToken;
-import net.anthavio.uber.UberToken.TokenType;
-import net.anthavio.uber.response.UberProducts;
-import net.anthavio.uber.response.UberUserProfile;
+import net.anthavio.uber.client.UberClient;
+import net.anthavio.uber.client.UberSettings;
+import net.anthavio.uber.client.UberToken;
+import net.anthavio.uber.client.UberToken.TokenType;
+import net.anthavio.uber.client.model.UberProducts;
+import net.anthavio.uber.client.model.UberUserProfile;
 
 /**
  * 

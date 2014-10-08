@@ -1,4 +1,4 @@
-package net.anthavio.uber;
+package net.anthavio.uber.client;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -15,7 +15,7 @@ import net.anthavio.httl.auth.OAuth2;
 import net.anthavio.httl.marshall.Jackson2Unmarshaller;
 import net.anthavio.httl.transport.HttpUrlConfig;
 import net.anthavio.httl.util.HttlUtil;
-import net.anthavio.uber.response.UberError;
+import net.anthavio.uber.client.model.UberError;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;

@@ -1,10 +1,10 @@
-package net.anthavio.uber.response;
+package net.anthavio.uber.client.model;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import net.anthavio.uber.JsonStringBuilder;
+import net.anthavio.uber.client.JsonStringBuilder;
 
 /**
  * https://developer.uber.com/v1/endpoints/#user-activity-v1-1
@@ -16,10 +16,19 @@ public class UberUserActivity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Position in pagination.
+	 */
 	private Integer offset;
 
+	/**
+	 * Number of items to retrieve (50 max).
+	 */
 	private Integer limit;
 
+	/**
+	 * Total number of items available.
+	 */
 	private Integer count;
 
 	private List<UberUserActivityItem> history;
@@ -65,16 +74,35 @@ public class UberUserActivity implements Serializable {
 
 		private static final long serialVersionUID = 1L;
 
+		/**
+		 * Unique user identifier.
+		 */
 		private String uuid;
 
+		/**
+		 * Unix timestamp of trip request time.
+		 */
 		private Date request_time;
 
+		/**
+		 * Unique identifier representing a specific product for a given latitude & longitude. 
+		 * For example, uberX in San Francisco will have a different product_id than uberX in Los Angeles.
+		 */
 		private String product_id;
 
+		/**
+		 * Status of the trip. Only returns completed for now.
+		 */
 		private String status;
 
+		/**
+		 * Length of trip in miles.
+		 */
 		private Float distance;
 
+		/**
+		 * Unix timestamp of trip start time.
+		 */
 		private Date start_time;
 
 		private Date end_time;
@@ -161,10 +189,19 @@ public class UberUserActivity implements Serializable {
 
 		private static final long serialVersionUID = 1L;
 
+		/**
+		 * Human-readable address.
+		 */
 		private String address;
 
+		/**
+		 * Latitude component of location.
+		 */
 		private Float latitude;
 
+		/**
+		 * Longitude component of location.
+		 */
 		private Float longitude;
 
 		public String getAddress() {
