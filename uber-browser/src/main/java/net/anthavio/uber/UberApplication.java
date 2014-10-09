@@ -1,5 +1,7 @@
 package net.anthavio.uber;
 
+import net.anthavio.httl.HttlBuilder;
+import net.anthavio.httl.SenderConfigurer;
 import net.anthavio.uber.client.UberClient;
 import net.anthavio.uber.client.UberSettings;
 import net.anthavio.uber.web.vaadin.StaticContentServlet;
@@ -43,7 +45,9 @@ public class UberApplication extends SpringBootServletInitializer {
 
 	@Bean
 	public UberClient UberClient() {
-		return new UberClient(UberSettings());
+		UberSettings uberSettings = UberSettings();
+		SenderConfigurer config = HttlBuilder.httpClient4(uberSettings.getApiUrl().toString()).sender();
+		return new UberClient(UberSettings(), config);
 	}
 
 	@Bean

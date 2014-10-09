@@ -5,8 +5,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 
-import net.anthavio.uber.web.SessionData;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.VaadinUI;
 import org.vaadin.spring.navigator.SpringViewProvider;
@@ -36,7 +34,7 @@ import fi.jasoft.qrcode.QRCode;
 @Theme("uber-valo")
 @Title("Uber Desktop Browser")
 @Widgetset("net.anthavio.uber.widgetset.UberDesktopWidgetset")
-public class UberDesktopUI extends UI implements ViewChangeListener {
+public class UberDesktopUI extends UI {
 
 	private static final long serialVersionUID = 1L;
 
@@ -44,7 +42,7 @@ public class UberDesktopUI extends UI implements ViewChangeListener {
 	SpringViewProvider viewProvider;
 
 	@Autowired
-	SessionData session;
+	UberService service;
 
 	@Override
 	protected void init(VaadinRequest request) {
@@ -57,7 +55,7 @@ public class UberDesktopUI extends UI implements ViewChangeListener {
 		navigator.setErrorView(viewProvider.getView("")); //send to welcome
 		setNavigator(navigator);
 
-		navigator.addViewChangeListener(this);
+		navigator.addViewChangeListener(new CustomViewChangeListener());
 
 		setErrorHandler(new CustomErrorHandler());
 		/*
@@ -105,21 +103,26 @@ public class UberDesktopUI extends UI implements ViewChangeListener {
 		}
 	}
 
-	@Override
-	public boolean beforeViewChange(ViewChangeEvent event) {
-		if (event.getNewView() instanceof ProtectedView) {
-			if (session.getBearerToken() == null) {
-				//Notification.show(" To continue, you must be logged into Uber");
-				getUI().getNavigator().navigateTo("");
-				return false;
+	class CustomViewChangeListener implements ViewChangeListener {
+
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public boolean beforeViewChange(ViewChangeEvent event) {
+			if (event.getNewView() instanceof ProtectedView) {
+				if (service.isLoggedIn() == false) {
+					//Notification.show(" To continue, you must be logged into Uber");
+					getUI().getNavigator().navigateTo("");
+					return false;
+				}
 			}
+
+			return true; //allow others
 		}
 
-		return true; //allow others
-	}
-
-	@Override
-	public void afterViewChange(ViewChangeEvent event) {
+		@Override
+		public void afterViewChange(ViewChangeEvent event) {
+		}
 	}
 
 	class CustomErrorHandler implements ErrorHandler {

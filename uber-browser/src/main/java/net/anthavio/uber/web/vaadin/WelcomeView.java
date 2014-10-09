@@ -1,8 +1,5 @@
 package net.anthavio.uber.web.vaadin;
 
-import net.anthavio.uber.client.UberClient;
-import net.anthavio.uber.web.SessionData;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.UIScope;
 import org.vaadin.spring.navigator.VaadinView;
@@ -26,18 +23,14 @@ public class WelcomeView extends Panel implements View {
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	SessionData session;
-
-	@Autowired
-	UberClient uber;
+	UberService service;
 
 	public WelcomeView() {
 		VerticalLayout layout = new VerticalLayout();
 		Button btnLogin = new Button("Sign In");
 
 		btnLogin.addClickListener(event -> {
-			String authorizationUrl = uber.getOauth2().getAuthorizationUrl("profile history_lite history");
-			getUI().getPage().setLocation(authorizationUrl);
+			getUI().getPage().setLocation(service.loginInitiate());
 		});
 
 		layout.addComponent(new Label("You must be signed in to Uber"));
@@ -50,7 +43,7 @@ public class WelcomeView extends Panel implements View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		if (session.getBearerToken() != null) {
+		if (service.isLoggedIn()) {
 			getUI().getNavigator().navigateTo("profile");
 		}
 	}
