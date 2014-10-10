@@ -19,6 +19,8 @@
 	<inherits name="com.vaadin.addon.responsive.ResponsiveWidgetSet" />
 
 	<inherits name="fi.jasoft.qrcode.QrcodeWidgetset" />
+	
+	<inherits name="com.vaadin.tapio.googlemaps.Widgetset" />
 <!--
 	<inherits name="com.vaadin.addon.touchkit.gwt.TouchKitWidgetSet" />
 	<inherits name="org.vaadin.juho.imageupload.libgwtimageupload" />

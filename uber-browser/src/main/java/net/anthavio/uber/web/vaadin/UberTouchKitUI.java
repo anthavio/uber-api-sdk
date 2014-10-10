@@ -11,14 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.spring.navigator.SpringViewProvider;
 import org.vaadin.spring.touchkit.TouchKitUI;
 
+import com.vaadin.addon.touchkit.ui.TabBarView;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
-import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.ErrorHandler;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 
@@ -46,25 +47,9 @@ public class UberTouchKitUI extends UI {
 		if (request.getParameter("mobile") == null && !getPage().getWebBrowser().isTouchDevice()) {
 			//showNonMobileNotification();
 		}
-		Navigator navigator = new Navigator(this, this);
-		navigator.addProvider(viewProvider);
-		//navigator.setErrorProvider(new ErrorViewProvider());
-		navigator.setErrorView(viewProvider.getView("")); //send to welcome
-		setNavigator(navigator);
-
-		navigator.addViewChangeListener(new CustomViewChangeListener());
-
-		setErrorHandler(new CustomErrorHandler());
-
-		//TabBarView tabBarView = new TabBarView();
-		//Tab tab1 = tabBarView.addTab((NavigationView) viewProvider.getView("profile"));
-		//tab1.setIcon(FontAwesome.BOOK);
-		/*
-		Button btnLogin = new Button("Sign In");
-		btnLogin.addClickListener(event -> System.out.println("Prdel " + event.getButton()));
-		//btnLogin.setSizeFull();
-		setContent(btnLogin);
-		*/
+		//NavigationManager manager = new NavigationManager(new RideDefineView());
+		//setContent(manager);
+		setContent(new UberTabBarView());
 	}
 
 	@Override
@@ -101,6 +86,22 @@ public class UberTouchKitUI extends UI {
 			e.printStackTrace();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
+		}
+	}
+
+	class UberTabBarView extends TabBarView {
+
+		private static final long serialVersionUID = 1L;
+
+		public UberTabBarView() {
+			RideDefineView rideDefineView = new RideDefineView();
+			Tab defineTab = addTab(rideDefineView, "Ride");
+			ProfileView profileView = new ProfileView();
+			Tab profileTab = addTab(profileView, "Profile");
+			profileTab.setEnabled(false);
+			//setSelectedTab(rideDefineView);
+
+			//addListener(null);
 		}
 	}
 
