@@ -140,7 +140,7 @@ public class UberClient implements Closeable {
 	/**
 	 * Just a shortcut
 	 */
-	public OAuth2 getOauth2() {
+	public OAuth2 auth() {
 		return settings.getOauth2();
 	}
 

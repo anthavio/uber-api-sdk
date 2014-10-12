@@ -30,7 +30,7 @@ public class WelcomeView extends Panel implements View {
 		Button btnLogin = new Button("Sign In");
 
 		btnLogin.addClickListener(event -> {
-			getUI().getPage().setLocation(service.loginInitiate());
+			getUI().getPage().setLocation(service.getAuthorizationUrl());
 		});
 
 		layout.addComponent(new Label("You must be signed in to Uber"));
@@ -43,7 +43,7 @@ public class WelcomeView extends Panel implements View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		if (service.isLoggedIn()) {
+		if (UberTouchKitUI.getUberUI().isLoggedIn()) {
 			getUI().getNavigator().navigateTo("profile");
 		}
 	}

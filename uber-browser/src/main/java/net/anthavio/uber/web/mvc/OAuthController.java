@@ -5,7 +5,6 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.anthavio.httl.auth.OAuthTokenResponse;
 import net.anthavio.uber.client.UberClient;
 import net.anthavio.uber.web.vaadin.UberService;
 
@@ -15,6 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * https://developer.uber.com/v1/auth/
+ * 
+ * @author martin.vanek
+ *
+ */
 @Controller
 @RequestMapping("/oauth")
 public class OAuthController {
@@ -28,24 +33,22 @@ public class OAuthController {
 	@RequestMapping(value = "request", method = RequestMethod.GET)
 	public void oauthRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-		String loginUrl = client.getOauth2().getAuthorizationUrl("profile history", "state");
+		String loginUrl = client.auth().getAuthorizationUrl("profile history", "state");
 		//redirect user to login page
 		response.sendRedirect(loginUrl);
 	}
 
 	@RequestMapping(value = "callback", params = "error")
-	public String oauthCallbackError(@RequestParam(value = "error") String error,
+	public String oauthErrorCallback(@RequestParam(value = "error") String error,
 			@RequestParam(value = "error_description", required = false) String error_description) {
 
 		//When user clicks Deny -> error=access_denied
-		return service.loginFailed(error);
+		return service.oauthErrorCallback(error);
 	}
 
 	@RequestMapping(value = "callback", params = "code")
-	public String oauthCallback(@RequestParam(value = "code") String code) {
-
-		OAuthTokenResponse tokenResponse = client.getOauth2().access(code).get();
-		return service.loginSuccess(tokenResponse.getAccess_token());
+	public String oauthCodeCallback(@RequestParam(value = "code") String code) {
+		return service.oauthCodeCallback(code);
 	}
 	/*
 		private URL getCallbackUrl(javax.servlet.http.HttpServletRequest request) {

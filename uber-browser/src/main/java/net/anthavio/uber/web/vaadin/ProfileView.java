@@ -7,16 +7,13 @@ import net.anthavio.uber.client.model.UberUserActivity;
 import net.anthavio.uber.client.model.UberUserActivity.UberUserActivityItem;
 import net.anthavio.uber.client.model.UberUserProfile;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.spring.UIScope;
-import org.vaadin.spring.navigator.VaadinView;
+import org.vaadin.spring.events.EventBusListenerMethod;
 
 import com.jensjansson.pagedtable.PagedTable;
 import com.vaadin.addon.touchkit.ui.NavigationView;
 import com.vaadin.addon.touchkit.ui.Popover;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextField;
@@ -27,37 +24,32 @@ import com.vaadin.ui.VerticalLayout;
  * @author martin.vanek
  *
  */
-@UIScope
-@VaadinView(name = "profile")
-public class ProfileView extends VerticalLayout implements ProtectedView {
+public class ProfileView extends VerticalLayout {
 
 	private static final long serialVersionUID = 1L;
 
 	FormLayout form = new FormLayout();
-	TextField txtEmail = new TextField("Email");
 	TextField txtName = new TextField("Name");
-	Button butLogout = new Button("Logout");
+	TextField txtEmail = new TextField("Email");
+
+	Button buttonHome = new Button("Ride Home");
+	Button buttonLogout = new Button("Logout");
 
 	PagedTable tabHistory = new PagedTable("History");
 
-	@Autowired
-	UberService service;
-
 	public ProfileView() {
-		setMargin(true);
-		VerticalLayout layout = new VerticalLayout();
-
 		form.addComponent(txtName);
 		form.addComponent(txtEmail);
 		form.addComponent(tabHistory);
-		form.addComponent(butLogout);
+		form.addComponent(buttonHome);
+		form.addComponent(buttonLogout);
 
-		butLogout.addClickListener(event -> logout());
+		buttonLogout.addClickListener(event -> logout());
 
 		tabHistory.addContainerProperty("Request Time", Date.class, null);
 		tabHistory.addContainerProperty("Start Location", String.class, null);
 		tabHistory.addContainerProperty("End Location", String.class, null);
-
+		tabHistory.setPageLength(1);
 		tabHistory.addItemClickListener(new ItemClickListener() {
 			@Override
 			public void itemClick(ItemClickEvent event) {
@@ -70,13 +62,16 @@ public class ProfileView extends VerticalLayout implements ProtectedView {
 			}
 		});
 
-		layout.addComponent(form);
-		addComponent(layout);
+		addComponent(form);
+	}
+
+	@EventBusListenerMethod
+	public void onProfileSet(UberUserProfile profile) {
+		setProfile(profile);
 	}
 
 	private void logout() {
-		service.logout();
-		getUI().getNavigator().navigateTo("");
+		UberTouchKitUI.getUberUI().doLogout();
 	}
 
 	public void setProfile(UberUserProfile profile) {
@@ -89,10 +84,7 @@ public class ProfileView extends VerticalLayout implements ProtectedView {
 		txtName.setReadOnly(true);
 	}
 
-	@Override
-	public void enter(ViewChangeEvent event) {
-		setProfile(service.getUserProfile());
-		UberUserActivity history = service.loadHistory_v1(0, 10);
+	public void setHistory(UberUserActivity history) {
 		List<UberUserActivityItem> list = history.getHistory();
 		//TODO link to trip detail view with all attributes...
 		for (int i = 0; i < list.size(); ++i) {
@@ -102,7 +94,6 @@ public class ProfileView extends VerticalLayout implements ProtectedView {
 			tabHistory.addItem(cells, i);
 		}
 		tabHistory.setPageLength(list.size());
-
 	}
 
 	class DetailsPopover extends Popover {

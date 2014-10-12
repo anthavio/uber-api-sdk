@@ -1,16 +1,16 @@
 package net.anthavio.uber.web.vaadin;
 
+import net.anthavio.httl.auth.OAuthTokenResponse;
 import net.anthavio.uber.client.UberClient;
-import net.anthavio.uber.client.UberToken;
-import net.anthavio.uber.client.UberToken.TokenType;
 import net.anthavio.uber.client.model.UberPriceEstimates;
 import net.anthavio.uber.client.model.UberProducts;
 import net.anthavio.uber.client.model.UberTimeEstimates;
 import net.anthavio.uber.client.model.UberUserActivity;
-import net.anthavio.uber.client.model.UberUserProfile;
 import net.anthavio.uber.web.SessionData;
 import net.anthavio.uber.web.SessionData.Location;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +22,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UberService {
 
+	private final Logger log = LoggerFactory.getLogger(getClass());
+
 	@Autowired
 	private SessionData session;
 
@@ -32,28 +34,19 @@ public class UberService {
 		return session.getUserProfile() != null;
 	}
 
-	public void logout() {
-		session.setBearerToken(null);
-		session.setUserProfile(null);
+	public String getAuthorizationUrl() {
+		return uber.auth().getAuthorizationUrl("profile history_lite history");
 	}
 
-	public String loginInitiate() {
-		return uber.getOauth2().getAuthorizationUrl("profile history_lite history");
+	public String oauthCodeCallback(String code) {
+		OAuthTokenResponse tokenResponse = uber.auth().access(code).get();
+		session.setTokenResponse(tokenResponse);
+
+		return "redirect:/vui/mobile?oauth_done";
 	}
 
-	public String loginSuccess(String accessToken) {
-		UberUserProfile profile = uber.api().me(accessToken);
-		session.setUserProfile(profile);
-		session.setBearerToken(new UberToken(TokenType.BEARER, accessToken));
-		return "redirect:/vui/mobile#!" + "profile";//SettingsView.NAME;
-	}
-
-	public String loginFailed(String reason) {
-		return "redirect:/vui/#!" + "";//SettingsView.NAME;
-	}
-
-	public UberUserProfile getUserProfile() {
-		return session.getUserProfile();
+	public String oauthErrorCallback(String error) {
+		return "redirect:/vui/mobile?oauth_error=" + error;
 	}
 
 	public void setLocation(double latitude, double longitude) {
@@ -62,7 +55,7 @@ public class UberService {
 	}
 
 	public UberUserActivity loadHistory_v1(int offset, int limit) {
-		return uber.api().history_v1(session.getBearerToken().getValue(), offset, limit);
+		return uber.api().history_v1(session.getTokenResponse().getAccess_token(), offset, limit);
 	}
 
 	/**
@@ -80,10 +73,11 @@ public class UberService {
 	}
 
 	/**
-	 * Estimate how far are cab from me
+	 * Estimate how far are cabs from my position
 	 */
 	public UberTimeEstimates uberTime() {
 		Location location = session.getLocation();
 		return uber.api().time(session.getBearerToken(), location.getLatitude(), location.getLongitude(), null, null);
 	}
+
 }

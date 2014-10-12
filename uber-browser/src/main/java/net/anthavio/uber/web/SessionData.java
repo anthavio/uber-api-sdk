@@ -2,7 +2,9 @@ package net.anthavio.uber.web;
 
 import java.io.Serializable;
 
+import net.anthavio.httl.auth.OAuthTokenResponse;
 import net.anthavio.uber.client.UberToken;
+import net.anthavio.uber.client.UberToken.TokenType;
 import net.anthavio.uber.client.model.UberUserProfile;
 
 import org.springframework.context.annotation.Scope;
@@ -20,11 +22,20 @@ public class SessionData implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private UberToken bearerToken;
+	private OAuthTokenResponse tokenResponse;
 
 	private UberUserProfile userProfile;
 
 	private Location location;
+
+	private UberToken bearerToken;
+
+	public void logout() {
+		this.userProfile = null;
+		this.tokenResponse = null;
+		this.bearerToken = null;
+		this.location = null;
+	}
 
 	public Location getLocation() {
 		if (location == null) {
@@ -49,12 +60,17 @@ public class SessionData implements Serializable {
 		this.userProfile = userProfile;
 	}
 
-	public UberToken getBearerToken() {
-		return bearerToken;
+	public OAuthTokenResponse getTokenResponse() {
+		return tokenResponse;
 	}
 
-	public void setBearerToken(UberToken bearerToken) {
-		this.bearerToken = bearerToken;
+	public void setTokenResponse(OAuthTokenResponse tokenResponse) {
+		this.tokenResponse = tokenResponse;
+		this.bearerToken = new UberToken(TokenType.BEARER, tokenResponse.getAccess_token());
+	}
+
+	public UberToken getBearerToken() {
+		return this.bearerToken;
 	}
 
 	public static class Location implements Serializable {

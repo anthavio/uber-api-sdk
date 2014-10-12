@@ -37,7 +37,7 @@ public class UberToken implements Serializable {
 		}
 
 		if (value == null || value.isEmpty()) {
-			throw new IllegalArgumentException("Nuull or Empty Token value");
+			throw new IllegalArgumentException("Null or Empty Token value");
 		}
 
 		this.type = type;
