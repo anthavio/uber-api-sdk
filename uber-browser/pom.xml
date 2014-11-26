@@ -15,9 +15,9 @@
   
 	<properties>
 		<project.build.java.target>1.8</project.build.java.target>
-		<vaadin.version>7.3.1</vaadin.version>
+		<vaadin.version>7.3.3</vaadin.version>
 		<spring.version>4.0.7.RELEASE</spring.version>
-		<spring.boot.version>1.1.7.RELEASE</spring.boot.version>
+		<spring.boot.version>1.1.8.RELEASE</spring.boot.version>
 	</properties>
 
 	<repositories>
@@ -316,6 +316,16 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>${spring.boot.version}</version>
+				<configuration>
+					<mainClass>net.anthavio.uber.UberApplication</mainClass>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			
 			<plugin>

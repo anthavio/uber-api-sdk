@@ -82,6 +82,8 @@ public class UberClient implements Closeable {
 			}
 		});
 		*/
+		//config.addExecutionFilter(new HttpCacheFilter(config.getUrl().toString(), 5, TimeUnit.MINUTES));
+
 		config.addExecutionFilter(new HttlExecutionFilter() {
 
 			@Override

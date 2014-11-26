@@ -1,6 +1,6 @@
 package net.anthavio.uber.client;
 
-import net.anthavio.httl.HttlRequestBuilders.HttlRequestBuilder;
+import net.anthavio.httl.HttlRequestBuilder;
 import net.anthavio.httl.api.HttlApi;
 import net.anthavio.httl.api.HttlCall;
 import net.anthavio.httl.api.HttlHeaders;
